@@ -1,0 +1,13 @@
+  ----------  ./longevity_app_create.sh
+ |  Broker  | --------------------------> sshkey remove/add ---> app create ---> cartridge add ---> rhc domain show ---> delete all cartridges and apps---
+  ----------                            ^                     ^                                 |                                                        |
+                                        |                     |                                 |                                                        |
+                                        |                     |                                 |                                                        |
+                                        |                     |                                 |                                                        |
+                                        |                     |<---- Monitor scripts exec <-----|                                                        |
+                                        |                            Loop to create Apps                                                                 |
+                                        |                                                                                                                |
+                                        |                                                                                                                |
+                                        |                                                One Cycle                                                       |
+                                        ------------------------------------------------------------------------------------------------------------------
+

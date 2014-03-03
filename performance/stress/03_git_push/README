@@ -1,0 +1,4 @@
+Failed rule:
+this error happened during git push
+The remote end hung up unexpectedly
+grep "The remote end hung up unexpectedly" git_test/git_push90 |wc
