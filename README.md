@@ -1,7 +1,7 @@
 ShiftBox
 ========
 
-performance, move and misc scripts
+performance, move, upgrade and misc scripts
 
 
 Performance testing includes the following test types:
