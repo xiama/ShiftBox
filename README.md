@@ -7,3 +7,5 @@ Scalability testing
 Stress testing
 Longevity testing
 Load testing
+
+Move testing:
