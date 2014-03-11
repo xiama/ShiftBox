@@ -35,8 +35,8 @@ echo -e "Please input your choice\n 0: all data \n Specified app: ${app_list// /
 read choice
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "php_app"; then
-    php_app_check ${php_app} ${rhlogin} ${password} "Welcome to OpenShift" "1" || failed_app="${failed_app}${php_app} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "php54_app"; then
+    php54_app_check ${php54_app} ${rhlogin} ${password} "Welcome to OpenShift" "1" || failed_app="${failed_app}${php54_app} "
 fi
 
 
@@ -102,8 +102,8 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_php_app"; then
-    scalable_php_app_check ${scalable_php_app} ${rhlogin} ${password} "2" || failed_app="${failed_app}${scalable_php_app} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_php53_app"; then
+    scalable_php53_app_check ${scalable_php53_app} ${rhlogin} ${password} "2" || failed_app="${failed_app}${scalable_php53_app} "
 fi
 
 

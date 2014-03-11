@@ -38,19 +38,19 @@ create_app ${jenkins_app} "jenkins" ${rhlogin} ${password} "--no-git"
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "php_app"; then
-    create_app ${php_app} "php" ${rhlogin} ${password} &&
-    add_cart ${php_app} "cron" "${rhlogin}" "${password}" &&
-    add_cart ${php_app} "postgresql-8.4" "${rhlogin}" "${password}" &&
-    run_command "cd ${php_app} && echo 'date >> \${OPENSHIFT_REPO_DIR}php/date.txt' >.openshift/cron/minutely/date.sh && chmod +x .openshift/cron/minutely/date.sh && git add . && git commit -a -mx && git push && cd -" || failed_app="${failed_app}${php_app} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "php54_app"; then
+    create_app ${php54_app} "php-5.4" ${rhlogin} ${password} &&
+    add_cart ${php54_app} "cron" "${rhlogin}" "${password}" &&
+    add_cart ${php54_app} "postgresql-8.4" "${rhlogin}" "${password}" &&
+    run_command "cd ${php54_app} && echo 'date >> \${OPENSHIFT_REPO_DIR}/date.txt' >.openshift/cron/minutely/date.sh && chmod +x .openshift/cron/minutely/date.sh && git add . && git commit -a -mx && git push && cd -" || failed_app="${failed_app}${php54_app} "
 fi
 
 
 echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "perl_app"; then 
     create_app ${perl_app} "perl-5.10" ${rhlogin} ${password} &&
-    add_cart ${perl_app} "mysql" "${rhlogin}" "${password}" &&
-    run_command "cp -rf data/test.pl ${perl_app}/perl/ && cd ${perl_app} && git add . && git commit -a -mx && git push && cd -"  || failed_app="${failed_app}${perl_app} "
+    add_cart ${perl_app} "mysql-5.5" "${rhlogin}" "${password}" &&
+    run_command "cp -rf data/test.pl ${perl_app}/ && cd ${perl_app} && git add . && git commit -a -mx && git push && cd -"  || failed_app="${failed_app}${perl_app} "
 fi
 
 
@@ -85,7 +85,7 @@ fi
 echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "nodejs010_app"; then
     create_app ${nodejs010_app} "nodejs-0.10" ${rhlogin} ${password} &&
-    run_command "cp -rf data/server.js ${nodejs010_app} && cd ${nodejs010_app} && sed -i '/dependencies/a \ \ \ \ \"websocket\": \">= 1.0.7\"' package.json && git add . && git commit -amt && git push && cd -" || failed_app="${failed_app}${nodejs010_app} "
+    run_command "cp -rf data/server.js ${nodejs010_app} && cd ${nodejs010_app} && sed -i '/dependencies/a \ \ \ \ \"websocket\": \">= 1.0.7\",' package.json && git add . && git commit -amt && git push && cd -" || failed_app="${failed_app}${nodejs010_app} "
 fi
 
 
@@ -98,7 +98,7 @@ fi
 echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "jbossews20_app"; then
     create_app ${jbossews20_app} "jbossews-2.0" ${rhlogin} ${password} &&
-    add_cart ${jbossews20_app} "mysql" "${rhlogin}" "${password}" &&
+    add_cart ${jbossews20_app} "mysql-5.5" "${rhlogin}" "${password}" &&
     run_command "cp -rf data/mysql.jsp ${jbossews20_app}/src/main/webapp/ && mkdir -p ${jbossews20_app}/src/main/webapp/WEB-INF/lib && cp -rf data/mysql-connector-java-5.1.20-bin.jar ${jbossews20_app}/src/main/webapp/WEB-INF/lib && cd ${jbossews20_app} && git add . && git commit -amt && git push && cd -" &&
     run_command "cd ${jbossews20_app} && touch .openshift/markers/hot_deploy && git add . && git commit -amt && git push && cd -" || failed_app="${failed_app}${jbossews20_app} "
 fi
@@ -108,7 +108,7 @@ echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "jbosseap_app"; then
     create_app ${jbosseap_app} "jbosseap" ${rhlogin} ${password} &&
     add_cart ${jbosseap_app} "jenkins-client" "${rhlogin}" "${password}" &&
-    add_cart ${jbosseap_app} "mysql" "${rhlogin}" "${password}" &&
+    add_cart ${jbosseap_app} "mysql-5.5" "${rhlogin}" "${password}" &&
     output=$(run_command "cp -rf data/test_mysql.jsp ${jbosseap_app}/src/main/webapp/test.jsp && cd ${jbosseap_app} && git add . && git commit -a -mx && git push && cd -") &&
     echo "${output}" &&
     echo "${output}" | grep -q 'Waiting for job to complete' &&
@@ -126,12 +126,12 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_php_app"; then
-    create_app ${scalable_php_app} "php-5.3" ${rhlogin} ${password} '--scaling' &&
-    add_cart ${scalable_php_app} "mysql" "${rhlogin}" "${password}" &&
+if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_php53_app"; then
+    create_app ${scalable_php53_app} "php-5.3" ${rhlogin} ${password} '--scaling' &&
+    add_cart ${scalable_php53_app} "mysql-5.5" "${rhlogin}" "${password}" &&
     min_gear_count=2 &&
-    run_command "rhc cartridge scale -c php --min ${min_gear_count} -a ${scalable_php_app} -l ${rhlogin} -p ${password}" &&
-    run_command "cd ${scalable_php_app} && git remote add upstream -m master git://github.com/openshift/mediawiki-example.git && git pull -s recursive -X theirs upstream master && git push && cd -" || failed_app="${failed_app}${scalable_php_app} "
+    run_command "rhc cartridge scale -c php --min ${min_gear_count} -a ${scalable_php53_app} -l ${rhlogin} -p ${password}" &&
+    run_command "cd ${scalable_php53_app} && git remote add upstream -m master git://github.com/openshift/mediawiki-example.git && git pull -s recursive -X theirs upstream master && git push && cd -" || failed_app="${failed_app}${scalable_php53_app} "
 fi
 
 
@@ -139,10 +139,10 @@ echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_perl_app"; then
     create_app ${scalable_perl_app} "perl-5.10" ${rhlogin} ${password} '--scaling' &&
     add_cart ${scalable_perl_app} "jenkins-client" "${rhlogin}" "${password}" &&
-    add_cart ${scalable_perl_app} "mysql" "${rhlogin}" "${password}" &&
+    add_cart ${scalable_perl_app} "mysql-5.1" "${rhlogin}" "${password}" &&
     min_gear_count=2 &&
     run_command "rhc cartridge scale -c perl-5.10 --min ${min_gear_count} -a ${scalable_perl_app} -l ${rhlogin} -p ${password}" &&
-    output=$(run_command "cp -rf data/test.pl ${scalable_perl_app}/perl/ && cd ${scalable_perl_app} && git add . && git commit -a -mx && git push && cd -") &&
+    output=$(run_command "cp -rf data/test.pl ${scalable_perl_app}/ && cd ${scalable_perl_app} && git add . && git commit -a -mx && git push && cd -") &&
     echo "${output}" &&
     echo "${output}" | grep -q 'Waiting for job to complete' &&
     print_gre_txt "Successfully grep 'Waiting for job to complete' in the above output" || failed_app="${failed_app}${scalable_perl_app} "
@@ -153,10 +153,10 @@ echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_python26_app"; then
     create_app ${scalable_python26_app} "python-2.6" ${rhlogin} ${password} '--scaling' &&
     add_cart ${scalable_python26_app} "jenkins-client" "${rhlogin}" "${password}" &&
-    add_cart ${scalable_python26_app} "mysql" "${rhlogin}" "${password}" &&
+    add_cart ${scalable_python26_app} "mysql-5.5" "${rhlogin}" "${password}" &&
     min_gear_count=2 &&
     run_command "rhc cartridge scale -c python-2.6 --min ${min_gear_count} -a ${scalable_python26_app} -l ${rhlogin} -p ${password}" &&
-    output=$(run_command "cp -r data/application ${scalable_python26_app}/wsgi/ && cd ${scalable_python26_app} && git add . && git commit -amt && git push && cd -") &&
+    output=$(run_command "cp -r data/wsgi.py ${scalable_python26_app}/ && cd ${scalable_python26_app} && git add . && git commit -amt && git push && cd -") &&
     echo "${output}" &&
     echo "${output}" | grep -q 'Waiting for job to complete' &&
     print_gre_txt "Successfully grep 'Waiting for job to complete' in the above output" &&
@@ -177,7 +177,7 @@ fi
 echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_ruby18_app"; then
     create_app ${scalable_ruby18_app} "ruby-1.8" ${rhlogin} ${password} '--scaling' &&
-    add_cart ${scalable_ruby18_app} "mysql" "${rhlogin}" "${password}" &&
+    add_cart ${scalable_ruby18_app} "mysql-5.1" "${rhlogin}" "${password}" &&
     run_command "cp -r data/{config.ru,Gemfile} ${scalable_ruby18_app}/ && cd ${scalable_ruby18_app} && bundle install && sed -i -e 's/#dbname/${scalable_ruby18_app}/g' config.ru -e 's/#user/${db_user}/g' config.ru -e 's/#passwd/${db_passwd}/g' config.ru && git add . && git commit -amt && git push && cd -" || failed_app="${failed_app}${scalable_ruby18_app}"
 fi
 
@@ -185,7 +185,7 @@ fi
 echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_ruby19_app"; then
     create_app ${scalable_ruby19_app} "ruby-1.9" ${rhlogin} ${password} '--scaling' &&
-    add_cart ${scalable_ruby19_app} "mysql" "${rhlogin}" "${password}" &&
+    add_cart ${scalable_ruby19_app} "mysql-5.5" "${rhlogin}" "${password}" &&
     run_command "cd ${scalable_ruby19_app} && git remote add upstream -m master git://github.com/openshift/rails-example.git && git pull -s recursive -X theirs upstream master && git push && cd -" || failed_app="${failed_app}${scalable_ruby19_app} "
 fi
 
@@ -202,7 +202,7 @@ fi
 echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbossews10_app"; then
     create_app ${scalable_jbossews10_app} "jbossews-1.0" ${rhlogin} ${password} '--scaling' &&
-    add_cart ${scalable_jbossews10_app} "mysql" "${rhlogin}" "${password}" &&
+    add_cart ${scalable_jbossews10_app} "mysql-5.1" "${rhlogin}" "${password}" &&
     run_command "cp -rf data/mysql.jsp ${scalable_jbossews10_app}/src/main/webapp/ && mkdir -p ${scalable_jbossews10_app}/src/main/webapp/WEB-INF/lib && cp -rf data/mysql-connector-java-5.1.20-bin.jar ${scalable_jbossews10_app}/src/main/webapp/WEB-INF/lib && cd ${scalable_jbossews10_app} && git add . && git commit -amt && git push && cd -" || failed_app="${failed_app}${scalable_jbossews10_app} "
 fi
 

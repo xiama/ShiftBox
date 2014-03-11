@@ -8,7 +8,7 @@ LIB_DIR="${script_real_dir}/../lib"
 source ${LIB_DIR}/openshift.sh
 source ${LIB_DIR}/util.sh
 
-function php_app_check() {
+function php54_app_check() {
     # $1: app_name
     # $2: rhlogin
     # $3: password
@@ -20,7 +20,7 @@ function php_app_check() {
     # Test existing data
     run_command "curl ${app_url} | grep 'title' | grep '${4}'" || return 1
     # Test git push
-    run_command "cd ${1} && sed -i '/title/s/${4}/${5}/g' php/index.php && git commit -a -m'modify title' && git push && cd -" || return 1
+    run_command "cd ${1} && sed -i '/title/s/${4}/${5}/g' index.php && git commit -a -m'modify title' && git push && cd -" || return 1
     # Test new data
     run_command "curl ${app_url} | grep 'title' | grep '${5}'" || return 1
     # Test cron
@@ -52,7 +52,7 @@ function perl_app_check() {
         run_command "curl '${app_url}test.pl?action=show' | grep 'speaker${4}'" || return 1
     fi
     # Test git push
-    run_command "cd ${1} && sed -i '/title/s/${4}/${5}/g' perl/index.pl && git commit -a -m'modify title' && git push && cd -" || return 1
+    run_command "cd ${1} && sed -i '/title/s/${4}/${5}/g' index.pl && git commit -a -m'modify title' && git push && cd -" || return 1
     # Test mysql connection
     run_command "curl -f ${app_url}test.pl?action=${6}" || return 1
     # Test new data
@@ -247,7 +247,7 @@ function diy_app_check() {
 }
 
 
-function scalable_php_app_check() {
+function scalable_php53_app_check() {
     # $1: app_name
     # $2: rhlogin
     # $3: password
@@ -278,7 +278,7 @@ function scalable_perl_app_check() {
         grep_string_from_web_gears ${1} ${2} ${3} "perl-5.10" ${7} "speaker${4}" '' 'test.pl?action=show' || return 1
     fi
     # Test jenkins build
-    output=$(run_command "cd ${1} && sed -i '/title/s/${4}/${5}/g' perl/index.pl && git commit -a -m'modify title' && git push && cd -") &&
+    output=$(run_command "cd ${1} && sed -i '/title/s/${4}/${5}/g' index.pl && git commit -a -m'modify title' && git push && cd -") &&
     echo "${output}" &&
     echo "${output}" | grep -q 'Waiting for job to complete' &&
     print_gre_txt "Successfully grep 'Waiting for job to complete' in the above output" || return 1
@@ -313,7 +313,7 @@ function scalable_python26_app_check() {
     echo ""
     print_gre_txt "Get pid list from all the gears of app" &&
     old_pid_list=$(get_app_pid_list ${1} ${2} ${3}) &&
-    output=$(run_command "cd ${1} && sed -i '/title/s/${4}/${5}/g' wsgi/application && git commit -a -m'modify title' && git push && cd -") &&
+    output=$(run_command "cd ${1} && sed -i '/title/s/${4}/${5}/g' wsgi.py && git commit -a -m'modify title' && git push && cd -") &&
     echo "${output}" &&
     echo "${output}" | grep -q 'Waiting for job to complete' &&
     print_gre_txt "Successfully grep 'Waiting for job to complete' in the above output" &&
@@ -341,7 +341,7 @@ function scalable_python27_app_check() {
     # Test existing data and min setting
     grep_string_from_web_gears ${1} ${2} ${3} "python-2.7" ${6} "${4}" 'Y' '' || return 1
     # Test git push
-    output=$(run_command "cd ${1} && sed -i '/title/s/${4}/${5}/g' wsgi/application && git commit -a -m'modify title' && git push && cd -") &&
+    output=$(run_command "cd ${1} && sed -i '/title/s/${4}/${5}/g' wsgi.py && git commit -a -m'modify title' && git push && cd -") &&
     echo "${output}" &&
     ref_id=$(echo "${output}" | grep '\[master .*\]' | awk -F'master ' '{print $2}' | awk -F']' '{print $1}') &&
     print_gre_txt "ref id: ${ref_id}" || return 1

@@ -16,7 +16,7 @@ if (action == null) {
 String context = "";
 if (action.equals("create")) {
   InitialContext ctx = new InitialContext();
-  DataSource ds = (DataSource) ctx.lookup("java:jboss/datasources/MysqlDS");
+  DataSource ds = (DataSource) ctx.lookup("java:jboss/datasources/MySQLDS");
   Connection connection=ds.getConnection();
   Statement statement = connection.createStatement();
   statement.executeUpdate("DROP TABLE IF EXISTS ucctalk");
@@ -35,7 +35,7 @@ if (action.equals("create")) {
   out.print(context);
 } else if (action.equals("modify")) {
   InitialContext ctx = new InitialContext();
-  DataSource ds = (DataSource) ctx.lookup("java:jboss/datasources/MysqlDS");
+  DataSource ds = (DataSource) ctx.lookup("java:jboss/datasources/MySQLDS");
   Connection connection=ds.getConnection();
   Statement statement = connection.createStatement();
   statement.executeUpdate("DROP TABLE IF EXISTS ucctalk");
@@ -54,7 +54,7 @@ if (action.equals("create")) {
   out.print(context);
 } else {
   InitialContext ctx = new InitialContext();
-  DataSource ds = (DataSource) ctx.lookup("java:jboss/datasources/MysqlDS");
+  DataSource ds = (DataSource) ctx.lookup("java:jboss/datasources/MySQLDS");
   Connection connection=ds.getConnection();
   Statement statement = connection.createStatement();
   ResultSet rs = statement.executeQuery("SELECT * FROM ucctalk");
