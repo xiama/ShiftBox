@@ -41,9 +41,9 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "perl_app"; then 
-    perl_app_check ${perl_app} ${rhlogin} ${password} "Welcome to OpenShift" "1" "create" &&
-    print_warnning "Remember to idle this app on node using oo-admin-ctl-app command!!!" || failed_app="${failed_app}${perl_app} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "perl010_app"; then 
+    perl010_app_check ${perl010_app} ${rhlogin} ${password} "Welcome to OpenShift" "1" "create" &&
+    print_warnning "Remember to idle this app on node using oo-admin-ctl-app command!!!" || failed_app="${failed_app}${perl010_app} "
 fi
 
 
@@ -90,8 +90,8 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "jbosseap_app"; then
-    jbosseap_app_check ${jbosseap_app} ${rhlogin} ${password} "Welcome to OpenShift" "1" "create" || failed_app="${failed_app}${jbosseap_app} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "jbosseap6_app"; then
+    jbosseap6_app_check ${jbosseap6_app} ${rhlogin} ${password} "Welcome to OpenShift" "1" "create" || failed_app="${failed_app}${jbosseap6_app} "
 fi
 
 
@@ -108,8 +108,8 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_perl_app"; then
-    scalable_perl_app_check ${scalable_perl_app} ${rhlogin} ${password} "Welcome to OpenShift" "1" "create" "2" || failed_app="${failed_app}${scalable_perl_app} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_perl510_app"; then
+    scalable_perl510_app_check ${scalable_perl510_app} ${rhlogin} ${password} "Welcome to OpenShift" "1" "create" "2" || failed_app="${failed_app}${scalable_perl510_app} "
 fi
 
 
@@ -154,14 +154,14 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbosseap_app"; then
-    scalable_jbosseap_app_check ${scalable_jbosseap_app} ${rhlogin} ${password} "Welcome to OpenShift" "1" "create" || failed_app="${failed_app}${scalable_jbosseap_app} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbosseap6_app"; then
+    scalable_jbosseap6_app_check ${scalable_jbosseap6_app} ${rhlogin} ${password} "Welcome to OpenShift" "1" "create" || failed_app="${failed_app}${scalable_jbosseap6_app} "
 
 fi
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbosseap_app1"; then
-    scalable_jbosseap_app1_check ${scalable_jbosseap_app1} ${rhlogin} ${password} "Welcome to OpenShift" "1" "2"  || failed_app="${failed_app}${scalable_jbosseap_app1} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbosseap6_app1"; then
+    scalable_jbosseap6_app1_check ${scalable_jbosseap6_app1} ${rhlogin} ${password} "Welcome to OpenShift" "1" "2"  || failed_app="${failed_app}${scalable_jbosseap6_app1} "
 fi
 
 echo '***********************************************' | tee -a ${log_file}

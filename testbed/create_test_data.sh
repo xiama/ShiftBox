@@ -47,10 +47,10 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "perl_app"; then 
-    create_app ${perl_app} "perl-5.10" ${rhlogin} ${password} &&
-    add_cart ${perl_app} "mysql-5.5" "${rhlogin}" "${password}" &&
-    run_command "cp -rf data/test.pl ${perl_app}/ && cd ${perl_app} && git add . && git commit -a -mx && git push && cd -"  || failed_app="${failed_app}${perl_app} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "perl010_app"; then 
+    create_app ${perl010_app} "perl-5.10" ${rhlogin} ${password} &&
+    add_cart ${perl010_app} "mysql-5.5" "${rhlogin}" "${password}" &&
+    run_command "cp -rf data/test.pl ${perl010_app}/ && cd ${perl010_app} && git add . && git commit -a -mx && git push && cd -"  || failed_app="${failed_app}${perl010_app} "
 fi
 
 
@@ -105,14 +105,14 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "jbosseap_app"; then
-    create_app ${jbosseap_app} "jbosseap" ${rhlogin} ${password} &&
-    add_cart ${jbosseap_app} "jenkins-client" "${rhlogin}" "${password}" &&
-    add_cart ${jbosseap_app} "mysql-5.5" "${rhlogin}" "${password}" &&
-    output=$(run_command "cp -rf data/test_mysql.jsp ${jbosseap_app}/src/main/webapp/test.jsp && cd ${jbosseap_app} && git add . && git commit -a -mx && git push && cd -") &&
+if [ X"$choice" == X"0" ] || include_item "${choice}" "jbosseap6_app"; then
+    create_app ${jbosseap6_app} "jbosseap" ${rhlogin} ${password} &&
+    add_cart ${jbosseap6_app} "jenkins-client" "${rhlogin}" "${password}" &&
+    add_cart ${jbosseap6_app} "mysql-5.5" "${rhlogin}" "${password}" &&
+    output=$(run_command "cp -rf data/test_mysql.jsp ${jbosseap6_app}/src/main/webapp/test.jsp && cd ${jbosseap6_app} && git add . && git commit -a -mx && git push && cd -") &&
     echo "${output}" &&
     echo "${output}" | grep -q 'Waiting for job to complete' &&
-    print_gre_txt "Successfully grep 'Waiting for job to complete' in the above output" || failed_app="${failed_app}${jbosseap_app} "
+    print_gre_txt "Successfully grep 'Waiting for job to complete' in the above output" || failed_app="${failed_app}${jbosseap6_app} "
 fi
 
 
@@ -136,16 +136,16 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_perl_app"; then
-    create_app ${scalable_perl_app} "perl-5.10" ${rhlogin} ${password} '--scaling' &&
-    add_cart ${scalable_perl_app} "jenkins-client" "${rhlogin}" "${password}" &&
-    add_cart ${scalable_perl_app} "mysql-5.1" "${rhlogin}" "${password}" &&
+if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_perl510_app"; then
+    create_app ${scalable_perl510_app} "perl-5.10" ${rhlogin} ${password} '--scaling' &&
+    add_cart ${scalable_perl510_app} "jenkins-client" "${rhlogin}" "${password}" &&
+    add_cart ${scalable_perl510_app} "mysql-5.1" "${rhlogin}" "${password}" &&
     min_gear_count=2 &&
-    run_command "rhc cartridge scale -c perl-5.10 --min ${min_gear_count} -a ${scalable_perl_app} -l ${rhlogin} -p ${password}" &&
-    output=$(run_command "cp -rf data/test.pl ${scalable_perl_app}/ && cd ${scalable_perl_app} && git add . && git commit -a -mx && git push && cd -") &&
+    run_command "rhc cartridge scale -c perl-5.10 --min ${min_gear_count} -a ${scalable_perl510_app} -l ${rhlogin} -p ${password}" &&
+    output=$(run_command "cp -rf data/test.pl ${scalable_perl510_app}/ && cd ${scalable_perl510_app} && git add . && git commit -a -mx && git push && cd -") &&
     echo "${output}" &&
     echo "${output}" | grep -q 'Waiting for job to complete' &&
-    print_gre_txt "Successfully grep 'Waiting for job to complete' in the above output" || failed_app="${failed_app}${scalable_perl_app} "
+    print_gre_txt "Successfully grep 'Waiting for job to complete' in the above output" || failed_app="${failed_app}${scalable_perl510_app} "
 fi
 
 
@@ -214,20 +214,20 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbosseap_app"; then
-    create_app ${scalable_jbosseap_app} "jbosseap" ${rhlogin} ${password} '--scaling' &&
-    add_cart ${scalable_jbosseap_app} "postgresql-9.2" ${rhlogin} ${password} &&
-    run_command "cp -rf data/test_psql.jsp ${scalable_jbosseap_app}/src/main/webapp/test.jsp && cd ${scalable_jbosseap_app} && git add . && git commit -a -mx && git push && cd -" || failed_app="${failed_app}${scalable_jbosseap_app} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbosseap6_app"; then
+    create_app ${scalable_jbosseap6_app} "jbosseap-6" ${rhlogin} ${password} '--scaling' &&
+    add_cart ${scalable_jbosseap6_app} "postgresql-9.2" ${rhlogin} ${password} &&
+    run_command "cp -rf data/test_psql.jsp ${scalable_jbosseap6_app}/src/main/webapp/test.jsp && cd ${scalable_jbosseap6_app} && git add . && git commit -a -mx && git push && cd -" || failed_app="${failed_app}${scalable_jbosseap6_app} "
 
 fi
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbosseap_app1"; then
-    create_app ${scalable_jbosseap_app1} "jbosseap" ${rhlogin} ${password} '--scaling' &&
-    add_cart ${scalable_jbosseap_app1} "jenkins-client" "${rhlogin}" "${password}" &&
+if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbosseap6_app1"; then
+    create_app ${scalable_jbosseap6_app1} "jbosseap-6" ${rhlogin} ${password} '--scaling' &&
+    add_cart ${scalable_jbosseap6_app1} "jenkins-client" "${rhlogin}" "${password}" &&
     min_gear_count=2 &&
-    run_command "rhc cartridge scale -c jbosseap-6 --min ${min_gear_count} -a ${scalable_jbosseap_app1} -l ${rhlogin} -p ${password}" &&
-    run_command "rhc app-configure -a ${scalable_jbosseap_app1} --no-auto-deploy --keep-deployments 3 -l ${rhlogin} -p ${password}" || failed_app="${failed_app}${scalable_jbosseap_app1} "
+    run_command "rhc cartridge scale -c jbosseap-6 --min ${min_gear_count} -a ${scalable_jbosseap6_app1} -l ${rhlogin} -p ${password}" &&
+    run_command "rhc app-configure -a ${scalable_jbosseap6_app1} --no-auto-deploy --keep-deployments 3 -l ${rhlogin} -p ${password}" || failed_app="${failed_app}${scalable_jbosseap6_app1} "
 fi
 
 echo '***********************************************' | tee -a ${log_file}

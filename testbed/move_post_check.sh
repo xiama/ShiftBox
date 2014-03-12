@@ -147,8 +147,8 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if isSelectedApp "perl_app"; then
-    perl_app_check ${perl_app} ${rhlogin} ${password} "1" "2" "modify" || failed_app="${failed_app}${perl_app} "
+if isSelectedApp "perl010_app"; then
+    perl010_app_check ${perl010_app} ${rhlogin} ${password} "1" "2" "modify" || failed_app="${failed_app}${perl010_app} "
 fi
 
 
@@ -195,8 +195,8 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if isSelectedApp "jbosseap_app"; then
-    jbosseap_app_check ${jbosseap_app} ${rhlogin} ${password} "1" "2" "modify" || failed_app="${failed_app}${jbosseap_app} "
+if isSelectedApp "jbosseap6_app"; then
+    jbosseap6_app_check ${jbosseap6_app} ${rhlogin} ${password} "1" "2" "modify" || failed_app="${failed_app}${jbosseap6_app} "
 fi
 
 
@@ -213,8 +213,8 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if isSelectedApp "scalable_perl_app"; then
-    scalable_perl_app_check ${scalable_perl_app} ${rhlogin} ${password} "1" "2" "modify" "2" || failed_app="${failed_app}${scalable_perl_app} "
+if isSelectedApp "scalable_perl510_app"; then
+    scalable_perl510_app_check ${scalable_perl510_app} ${rhlogin} ${password} "1" "2" "modify" "2" || failed_app="${failed_app}${scalable_perl510_app} "
 fi
 
 
@@ -261,14 +261,14 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if isSelectedApp "scalable_jbosseap_app"; then
-    scalable_jbosseap_app_check ${scalable_jbosseap_app} ${rhlogin} ${password} "1" "2" "modify" "scale-up" || failed_app="${failed_app}${scalable_jbosseap_app} "
+if isSelectedApp "scalable_jbosseap6_app"; then
+    scalable_jbosseap6_app_check ${scalable_jbosseap6_app} ${rhlogin} ${password} "1" "2" "modify" "scale-up" || failed_app="${failed_app}${scalable_jbosseap6_app} "
 
 fi
 
 echo '***********************************************' | tee -a ${log_file}
-if isSelectedApp "scalable_jbosseap_app1"; then
-    scalable_jbosseap_app1_check ${scalable_jbosseap_app1} ${rhlogin} ${password} "1" "2" "2"  || failed_app="${failed_app}${scalable_jbosseap_app1} "
+if isSelectedApp "scalable_jbosseap6_app1"; then
+    scalable_jbosseap6_app1_check ${scalable_jbosseap6_app1} ${rhlogin} ${password} "1" "2" "2"  || failed_app="${failed_app}${scalable_jbosseap6_app1} "
 fi
 
 echo '***********************************************' | tee -a ${log_file}
