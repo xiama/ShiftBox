@@ -8,7 +8,7 @@ LIB_DIR="${script_real_dir}/../lib"
 source ${LIB_DIR}/openshift.sh
 source ${LIB_DIR}/util.sh
 
-function php_app_check() {
+function php53_app_check() {
     # $1: app_name
     # $2: rhlogin
     # $3: password
@@ -33,7 +33,7 @@ function php_app_check() {
     print_warnning "Remember to ssh into app to check psql connection!!!" || return 1
 }
 
-function perl_app_check() {
+function perl510_app_check() {
     # $1: app_name
     # $2: rhlogin
     # $3: password
@@ -202,7 +202,7 @@ function jbossews20_app_check() {
 }
 
 
-function jbosseap_app_check() {
+function jbosseap6_app_check() {
     # $1: app_name
     # $2: rhlogin
     # $3: password
@@ -247,7 +247,7 @@ function diy_app_check() {
 }
 
 
-function scalable_php_app_check() {
+function scalable_php53_app_check() {
     # $1: app_name
     # $2: rhlogin
     # $3: password
@@ -261,7 +261,7 @@ function scalable_php_app_check() {
 }
 
 
-function scalable_perl_app_check() {
+function scalable_perl510_app_check() {
     # $1: app_name
     # $2: rhlogin
     # $3: password
@@ -523,7 +523,7 @@ function scalable_jbossews20_app_check() {
     run_command "curl ${app_url} | grep 'title' | grep '${5}'" || return 1
 }
 
-function scalable_jbosseap_app_check() {
+function scalable_jbosseap6_app_check() {
     # $1: app_name
     # $2: rhlogin
     # $3: password
@@ -564,7 +564,7 @@ function scalable_jbosseap_app_check() {
     fi
 }
 
-function scalable_jbosseap_app1_check() {
+function scalable_jbosseap6_app1_check() {
     # $1: app_name
     # $2: rhlogin
     # $3: password

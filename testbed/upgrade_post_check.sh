@@ -58,14 +58,14 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "php_app"; then
-    php_app_check ${php_app} ${rhlogin} ${password} "1" "2" "scale-down" || failed_app="${failed_app}${php_app} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "php53_app"; then
+    php53_app_check ${php53_app} ${rhlogin} ${password} "1" "2" "scale-down" || failed_app="${failed_app}${php53_app} "
 fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "perl_app"; then 
-    perl_app_check ${perl_app} ${rhlogin} ${password} "1" "2" "modify" || failed_app="${failed_app}${perl_app} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "perl510_app"; then 
+    perl510_app_check ${perl510_app} ${rhlogin} ${password} "1" "2" "modify" || failed_app="${failed_app}${perl510_app} "
 fi
 
 
@@ -112,8 +112,8 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "jbosseap_app"; then
-    jbosseap_app_check ${jbosseap_app} ${rhlogin} ${password} "1" "2" "modify" || failed_app="${failed_app}${jbosseap_app} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "jbosseap6_app"; then
+    jbosseap6_app_check ${jbosseap6_app} ${rhlogin} ${password} "1" "2" "modify" || failed_app="${failed_app}${jbosseap6_app} "
 fi
 
 
@@ -124,14 +124,14 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_php_app"; then
-    scalable_php_app_check ${scalable_php_app} ${rhlogin} ${password} "2" || failed_app="${failed_app}${scalable_php_app} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_php53_app"; then
+    scalable_php53_app_check ${scalable_php53_app} ${rhlogin} ${password} "2" || failed_app="${failed_app}${scalable_php53_app} "
 fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_perl_app"; then
-    scalable_perl_app_check ${scalable_perl_app} ${rhlogin} ${password} "1" "2" "modify" "2" || failed_app="${failed_app}${scalable_perl_app} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_perl510_app"; then
+    scalable_perl510_app_check ${scalable_perl510_app} ${rhlogin} ${password} "1" "2" "modify" "2" || failed_app="${failed_app}${scalable_perl510_app} "
 fi
 
 
@@ -178,14 +178,14 @@ fi
 
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbosseap_app"; then
-    scalable_jbosseap_app_check ${scalable_jbosseap_app} ${rhlogin} ${password} "1" "2" "modify" "scale-up" || failed_app="${failed_app}${scalable_jbosseap_app} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbosseap6_app"; then
+    scalable_jbosseap6_app_check ${scalable_jbosseap6_app} ${rhlogin} ${password} "1" "2" "modify" "scale-up" || failed_app="${failed_app}${scalable_jbosseap6_app} "
 
 fi
 
 echo '***********************************************' | tee -a ${log_file}
-if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbosseap_app1"; then
-    scalable_jbosseap_app1_check ${scalable_jbosseap_app1} ${rhlogin} ${password} "1" "2" "2"  || failed_app="${failed_app}${scalable_jbosseap_app1} "
+if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbosseap6_app1"; then
+    scalable_jbosseap6_app1_check ${scalable_jbosseap6_app1} ${rhlogin} ${password} "1" "2" "2"  || failed_app="${failed_app}${scalable_jbosseap6_app1} "
 fi
 
 echo '***********************************************' | tee -a ${log_file}
