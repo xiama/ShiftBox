@@ -632,7 +632,7 @@ function create_new_app_check() {
     # Get app url
     app_url=$(get_app_url ${1} ${2} ${3}) || return 1
     # Test jenkins build
-    output=$(run_command "cp -rf data/test_mysql.jsp ${1}/src/main/webapp/test.jsp && cd ${1} && git add . && git commit -a -mx && git push && cd -") &&
+    output=$(run_command "cp -rf data/test_mysql_2.1.jsp ${1}/src/main/webapp/test.jsp && cd ${1} && git add . && git commit -a -mx && git push && cd -") &&
     echo "${output}" &&
     echo "${output}" | grep -q 'Waiting for job to complete' &&
     print_gre_txt "Successfully grep 'Waiting for job to complete' in the above output" || return 1
