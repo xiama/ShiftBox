@@ -43,7 +43,7 @@ fi
 echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "perl510_app"; then 
     perl510_app_check ${perl510_app} ${rhlogin} ${password} "Welcome to OpenShift" "1" "create" &&
-    print_warnning "Remember to idle this app on node using oo-admin-ctl-app command!!!" || failed_app="${failed_app}${perl510_app} "
+    print_warnning "Remember to idle this app on node using oo-admin-ctl-gear command!!!" || failed_app="${failed_app}${perl510_app} "
 fi
 
 
