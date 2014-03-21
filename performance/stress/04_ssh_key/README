@@ -1,0 +1,5 @@
+1.verify no insistency between app and mongo of each user
+oo-admin-repair  --ssh-keys
+2.verify all the keys were really uploaded
+go to /var/lib/openshift/ on node count all the number of sshkeys
+cat */.ssh/authorized_keys |wc

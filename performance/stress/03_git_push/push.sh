@@ -4,7 +4,7 @@ read j
 [ -d ./git_test ] || mkdir ./git_test
 [ -d ./app_repo ] || mkdir ./app_repo
 
-#make change for the apps
+#make change for the python apps
 cd ./app_repo
 for i in `seq 1 $j`
 do
@@ -38,11 +38,9 @@ done
 
 
 #recovery the changes
-#make change for the apps
 cd ./app_repo
 for i in `seq 1 $j`
 do
-  rhc git-clone app$i -l user$i -predhat
   cd app$i && sed -i 's/basketball/OpenShift/g' wsgi/application && git add . && git commit -a -m'modify' &&git push &&cd -
 done
 

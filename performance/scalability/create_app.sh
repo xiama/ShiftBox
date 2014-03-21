@@ -4,7 +4,7 @@
 
 script_dir=$(dirname $0)
 pushd $script_dir >/dev/null && script_real_dir=$(pwd) && popd >/dev/null
-LIB_DIR="${script_real_dir}/../../lib"
+LIB_DIR="${script_real_dir}/../lib"
 
 source ${LIB_DIR}/openshift.sh
 source ${LIB_DIR}/util.sh
