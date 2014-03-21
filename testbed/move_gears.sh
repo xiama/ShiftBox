@@ -204,8 +204,8 @@ for app in ${app_list}; do
         if issamenode ${dns} ${gbNodes[0]} ; then
              targetnode="${gbNodes[1]}"
         fi
-        print_blu_txt "AppName:${app} CartType:${type} "
         print_blu_txt "\n${istep}.${jstep} Move gear $type:" 
+        print_blu_txt "AppName:${app} CartType:${type} "
         mvcommand="oo-admin-move --gear_uuid $uuid -i $targetnode"
         print_red_txt "$mvcommand" 
         RemoteExecute "$ConfUser" "$ConfUserPassword" "$ConfBrokerName" "$mvcommand"
