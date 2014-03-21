@@ -1,0 +1,42 @@
+Add sshkey to user account when user has a large number of gears
+
+Test machine:
+KVM   8GB RAM | 4 VCPU | 80GB Disk
+Broker&Node All in one, puddle: 2.1/2014-03-17.2
+
+
+1.One user, one domain
+Create apps, including non-scalable and scalable ruby/python/perl/php, scalable app has 2 gears
+
+Test Results:
+36 gears  Add sshkey 1-50
+Each sshkey cost about 14s
+
+60 gears  Add sshkey 50-70
+Each sshkey cost about 25s
+
+81 gears Add sshkey 71-80
+Each sshkey cost about 35s
+
+
+100 gears(including jenkins server) Add sshkey 81-100
+45s
+
+----------------------------------------------------------------------------------------------------
+1.One user, one domain
+
+Test Results:
+36 gears  Add sshkey 1-30
+28 33 37 45 49 53 62 64 72 77 82 83 89 97 101 106 116 117 123 125 134 135 141 148 154 163 167 175 179 186 187 196 
+188 198 213 218 224 216 227 233 241 243 236 257 260 251 262 264 .. .. 293 292 300
+The 53th key, 300s timeout, but the operation would be finished for some time
+
+After modify ProxyTimeout
+/etc/httpd/conf.d/000002_openshift_origin_broker_proxy.conf &
+/etc/httpd/conf.d/000001_openshift_origin_node.conf
+
+
+
+Add user1 to d1 with 12gears
+10s
+
