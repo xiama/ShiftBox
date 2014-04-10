@@ -29,8 +29,7 @@ function php53_app_check() {
     last_date_line=$(curl "${app_url}date.txt" | wc -l) &&
     run_command "sleep 60" &&
     new_date_line=$(curl "${app_url}date.txt" | wc -l) &&
-    run_command "test ${new_date_line} -gt ${last_date_line}" &&
-    print_warnning "Remember to ssh into app to check psql connection!!!" || return 1
+    run_command "test ${new_date_line} -gt ${last_date_line}" || return 1
 }
 
 function perl510_app_check() {
@@ -117,7 +116,6 @@ function ruby19_app_check() {
     echo "${output}" &&
     target_file=$(echo ${output} | awk -F'-f' '{print $2}' | awk '{print $1}' | tr -d [:blank:]) &&
     run_command "ssh ${app_ssh_url} 'cat ${target_file} | grep SignalException'" &&
-    print_warnning "Take note of the count of lines to compare with next check!!!" &&
     run_command "curl ${app_url} | grep 'title' | grep '${5}'" || return 1 
 }
 
@@ -256,8 +254,7 @@ function scalable_php53_app_check() {
     local app_url=""
     app_url=$(get_app_url ${1} ${2} ${3}) || return 1
     # Test existing data and min setting
-    grep_string_from_web_gears ${1} ${2} ${3} "php-5.3" ${4} 'mediawiki' '' 'index.php/Main_Page' &&
-    print_warnning "Pls check ${app_url}haproxy-status page to make sure all web gears are listed there!!!" || return 1
+    grep_string_from_web_gears ${1} ${2} ${3} "php-5.3" ${4} 'mediawiki' '' 'index.php/Main_Page' || return 1
 }
 
 
@@ -286,8 +283,7 @@ function scalable_perl510_app_check() {
     run_command "curl -f '${app_url}test.pl?action=${6}'" || return 1
     # Test new data and min setting
     grep_string_from_web_gears ${1} ${2} ${3} "perl-5.10" ${7} "${5}" 'Y' '' &&
-    grep_string_from_web_gears ${1} ${2} ${3} "perl-5.10" ${7} "speaker${5}" '' 'test.pl?action=show' &&
-    print_warnning "Pls check ${app_url}haproxy-status page to make sure all web gears are listed there!!!" || return 1
+    grep_string_from_web_gears ${1} ${2} ${3} "perl-5.10" ${7} "speaker${5}" '' 'test.pl?action=show' || return 1
 }
 
 
@@ -323,7 +319,6 @@ function scalable_python26_app_check() {
     # Test new data and min setting
     grep_string_from_web_gears ${1} ${2} ${3} "python-2.6" ${7} "${5}" 'Y' '' || return 1
     grep_string_from_web_gears ${1} ${2} ${3} "python-2.6" ${7} "speaker${5}" '' 'show' || return 1
-    print_warnning "Pls check ${app_url}haproxy-status page to make sure all web gears are listed there!!!" || return 1
 }
 
 
@@ -348,9 +343,8 @@ function scalable_python27_app_check() {
     # Test no-auto-deploy
     grep_string_from_web_gears ${1} ${2} ${3} "python-2.7" ${6} "${4}" 'Y' '' || return 1
     # Manual deploy
-    print_gre_txt "Command: ${deployment_list_cmd}" &&
+    run_command "${deployment_list_cmd}" &&
     output=$(eval "${deployment_list_cmd}") &&
-    echo "${output}" &&
     old_deployment_count=$(echo "${output}" | wc -l) &&
     output=$(run_command "rhc app-deploy ${ref_id} -a ${1} -l ${2} -p ${3}") &&
     echo "${output}" &&
@@ -358,9 +352,8 @@ function scalable_python27_app_check() {
     print_gre_txt "Deployment id: ${deploy_id}" &&
     grep_string_from_web_gears ${1} ${2} ${3} "python-2.7" ${6} "${5}" 'Y' '' || return 1
     # Test keep-deployments
-    print_gre_txt "Command: ${deployment_list_cmd}" &&
+    run_command "${deployment_list_cmd}" &&
     output=$(eval "${deployment_list_cmd}") &&
-    echo "${output}" &&
     new_deployment_count=$(echo "${output}" | wc -l) &&
     run_command "rhc deployment list -a ${1} -l ${2} -p ${3} | grep ${deploy_id}" &&
     print_gre_txt "new deployment id is listed in the above output!!!" &&
@@ -374,7 +367,6 @@ function scalable_python27_app_check() {
     grep_string_from_web_gears ${1} ${2} ${3} "python-2.7" ${6} "${4}" 'Y' '' || return 1
     run_command "rhc deployment-activate ${deploy_id} -a ${1} -l ${2} -p ${3}" &&
     grep_string_from_web_gears ${1} ${2} ${3} "python-2.7" ${6} "${5}" 'Y' '' || return 1
-    print_warnning "Pls check ${app_url}haproxy-status page to make sure all web gears are listed there!!!"
 }
 
 function scalable_ruby18_app_check() {
@@ -471,7 +463,6 @@ function scalable_nodejs010_app_check() {
         rest_api_app_event  ${1} ${2} ${3} ${8} "scale-down" &&
         grep_string_from_web_gears ${1} ${2} ${3} "nodejs-0.10" ${new_count} "${5}" 'Y' '' || return 1
     fi
-    print_warnning "Pls check ${app_url}haproxy-status page to make sure all web gears are listed there!!!"
 }
 
 
@@ -519,7 +510,6 @@ function scalable_jbossews20_app_check() {
     echo "${output}" &&
     target_file=$(echo ${output} | awk -F'-f' '{print $2}' | awk '{print $1}' | tr -d [:blank:]) &&
     run_command "ssh ${ssh_url} 'cat ${target_file} | grep PSPermGen'" &&
-    print_warnning "Take note of the count of lines to compare with next check!!!" &&
     run_command "curl ${app_url} | grep 'title' | grep '${5}'" || return 1
 }
 
@@ -544,7 +534,6 @@ function scalable_jbosseap6_app_check() {
     run_command "cd ${1} && sed -i '/title/s/${4}/${5}/g' src/main/webapp/index.html && git commit -a -m'modify title' && git push && cd -" || return 1
     # Test psql connecton
     run_command "curl -f '${app_url}test.jsp?action=${6}'" || return 1
-    print_warnning "Remember to ssh into app to check psql connection!!!"
     # Test new data
     run_command "curl ${app_url} | grep 'title' | grep '${5}'" &&
     run_command "curl '${app_url}test.jsp?action=show' | grep 'speaker${5}'" || return 1
@@ -552,15 +541,13 @@ function scalable_jbosseap6_app_check() {
     output=$(dump_app ${1} ${2} ${3}) &&
     echo "${output}" &&
     target_file=$(echo ${output} | awk -F'-f' '{print $2}' | awk '{print $1}' | tr -d [:blank:]) &&
-    run_command "ssh ${ssh_url} 'cat ${target_file} | grep PSPermGen'" &&
-    print_warnning "Take note of the count of lines to compare with next check!!!" || return 1
+    run_command "ssh ${ssh_url} 'cat ${target_file} | grep PSPermGen'" || return 1
     # Test new data and min setting
     if [ X"$7" == X"scale-up" ]; then
         new_count=2 &&
         run_command "rhc cartridge scale -c jbosseap-6 --min ${new_count} -a ${1} -l ${2} -p ${3}" &&
         grep_string_from_web_gears ${1} ${2} ${3} "jbosseap-6" ${new_count} "${5}" 'Y' '' || return 1
         grep_string_from_web_gears ${1} ${2} ${3} "jbosseap-6" ${new_count} "speaker${5}" '' 'test.jsp?action=show' || return 1
-        print_warnning "Pls check ${app_url}haproxy-status page to make sure all web gears are listed there!!!"
     fi
 }
 
@@ -585,9 +572,8 @@ function scalable_jbosseap6_app1_check() {
     # Test no-auto-deploy
     grep_string_from_web_gears ${1} ${2} ${3} "jbosseap-6" ${6} "${4}" 'Y' '' || return 1
     # Manual deploy and jenkins build
-    print_gre_txt "Command: ${deployment_list_cmd}" &&
+    run_command "${deployment_list_cmd}" &&
     output=$(eval "${deployment_list_cmd}") &&
-    echo "${output}" &&
     old_deployment_count=$(echo "${output}" | wc -l) &&
     output=$(run_command "rhc app-deploy ${ref_id} -a ${1} -l ${2} -p ${3}") &&
     echo "${output}" &&
@@ -596,9 +582,8 @@ function scalable_jbosseap6_app1_check() {
     print_gre_txt "Successfully grep 'Waiting for job to complete' and 'New build has been deployed' in the above output" &&
     grep_string_from_web_gears ${1} ${2} ${3} "jbosseap-6" ${6} "${5}" 'Y' '' || return 1
     # Test keep-deployments
-    print_gre_txt "Command: ${deployment_list_cmd}" &&
+    run_command "${deployment_list_cmd}" &&
     output=$(eval "${deployment_list_cmd}") &&
-    echo "${output}" &&
     new_deployment_count=$(echo "${output}" | wc -l) &&
     run_command "test ${new_deployment_count} -gt ${old_deployment_count}" &&
     print_gre_txt "this deployment is recorded." || return 1
@@ -613,7 +598,6 @@ function scalable_jbosseap6_app1_check() {
     run_command "rhc deployment-activate ${deploy_id} -a ${1} -l ${2} -p ${3}" &&
     run_command "sleep 30" &&
     grep_string_from_web_gears ${1} ${2} ${3} "jbosseap-6" ${6} "${5}" 'Y' '' || return 1
-    print_warnning "Pls check ${app_url}haproxy-status page to make sure all web gears are listed there!!!"
 }
 
 function create_new_app_check() {
@@ -656,5 +640,4 @@ function create_new_app_check() {
     run_command "rhc snapshot-restore -a ${1} -f ${1}.tar.gz -l ${2} -p ${3}" || return 1
     run_command "sleep 30" &&
     grep_string_from_web_gears ${1} ${2} ${3} "jbosseap-6" ${4} "speaker1" '' 'test.jsp?action=show' || return 1
-    print_warnning "Pls check ${app_url}haproxy-status page to make sure all web gears are listed there!!!"
 }
