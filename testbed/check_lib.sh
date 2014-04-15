@@ -537,6 +537,9 @@ function scalable_jbosseap6_app_check() {
     # Test new data
     run_command "curl ${app_url} | grep 'title' | grep '${5}'" &&
     run_command "curl '${app_url}test.jsp?action=show' | grep 'speaker${5}'" || return 1
+    # Test restart
+    control_app ${1} ${2} ${3} "restart" &&
+    run_command "curl '${app_url}test.jsp?action=show' | grep 'speaker${5}'" || return 1
     # Test threaddump
     output=$(dump_app ${1} ${2} ${3}) &&
     echo "${output}" &&
