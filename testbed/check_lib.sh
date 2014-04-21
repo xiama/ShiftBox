@@ -92,7 +92,9 @@ function ruby18_app_check() {
     # Test quick-start app
     run_command "curl ${app_url} | grep -i 'redmine'" || return 1
     # Test alias
-    run_command "curl -H 'Host: ${4}' ${app_url} | grep -i 'redmine'" || return 1
+    write_etc_hosts ${app_url} ${4} &&
+    run_command "curl -vvv http://${4}/ | grep -i 'redmine'" &&
+    run_command "curl -vvv https://${4}/ --cacert data/ssl_cert/server.crt | grep -i 'redmine'" || return 1
 }
 
 function ruby19_app_check() {
@@ -495,6 +497,7 @@ function scalable_jbossews20_app_check() {
     # $3: password
     # $4: test string before change
     # $5: test string after change
+    # $6: alias string
 
     local app_url="" ssh_url="" output="" target_file=""
     app_url=$(get_app_url ${1} ${2} ${3}) &&
@@ -511,6 +514,11 @@ function scalable_jbossews20_app_check() {
     target_file=$(echo ${output} | awk -F'-f' '{print $2}' | awk '{print $1}' | tr -d [:blank:]) &&
     run_command "ssh ${ssh_url} 'cat ${target_file} | grep PSPermGen'" &&
     run_command "curl ${app_url} | grep 'title' | grep '${5}'" || return 1
+    # Test alise
+    # Test alias
+    write_etc_hosts ${app_url} ${6} &&
+    run_command "curl -vvv http://${6}/ | grep 'title' | grep '${5}'" &&
+    run_command "curl -vvv https://${6}/ --cacert data/ssl_cert/server1.crt | grep 'title' | grep '${5}'" || return 1
 }
 
 function scalable_jbosseap6_app_check() {
