@@ -184,7 +184,7 @@ fi
 
 echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbossews20_app"; then
-    scalable_jbossews20_app_check ${scalable_jbossews20_app} ${rhlogin} ${password} "1" "2" &&
+    scalable_jbossews20_app_check ${scalable_jbossews20_app} ${rhlogin} ${password} "1" "2" "bar1.${domain}.com" &&
     warnning_msg="${warnning_msg}\n${scalable_jbossews20_app}: Take note of the count of lines including 'PSPermGen' to compare with next check!!!" || failed_app="${failed_app}${scalable_jbossews20_app} "
 fi
 
