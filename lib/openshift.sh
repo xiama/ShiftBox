@@ -1,6 +1,15 @@
 #!/bin/bash
 source "${LIB_DIR}/util.sh"
 
+function write_etc_hosts() {
+    local app_hostname="$1"
+    local alias_str="$2"
+    local app_ip 
+    app_ip=$(nslookup ${app_hostname} | grep 'Address' | tail -n 1 | awk '{print $2}')
+    run_command "sed -i '/^[^#].*${alias_str}/s/.*/${app_ip}   ${alias_str}/g' /etc/hosts"
+    return $?
+}
+
 function create_app() {
     local app_name="$1"
     local cart_name="$2"

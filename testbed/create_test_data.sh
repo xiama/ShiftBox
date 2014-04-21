@@ -72,6 +72,7 @@ if [ X"$choice" == X"0" ] || include_item "${choice}" "ruby18_app"; then
     create_app ${ruby18_app} "ruby-1.8" ${rhlogin} ${password} &&
     add_cart ${ruby18_app} "mysql-5.1" "${rhlogin}" "${password}" &&
     run_command "rhc alias add ${ruby18_app} -l ${rhlogin} -p ${password} bar.${domain}.com" &&
+    run_command "rhc alias update-cert ${ruby18_app} -l ${rhlogin} -p ${password} --certificate data/ssl_cert/server.crt --private-key data/ssl_cert/server.key" &&
     run_command "cd ${ruby18_app} && rm -rf * && git remote add upstream -m master git://github.com/openshift/openshift-redmine-quickstart.git && git pull -s recursive -X theirs upstream master && git push && cd -" || failed_app="${failed_app}${ruby18_app} "
 fi
 
@@ -209,7 +210,9 @@ fi
 
 echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbossews20_app"; then
-    create_app ${scalable_jbossews20_app} "jbossews-2.0" ${rhlogin} ${password} '--scaling' || failed_app="${failed_app}${scalable_jbossews20_app} "
+    create_app ${scalable_jbossews20_app} "jbossews-2.0" ${rhlogin} ${password} '--scaling' &&
+    run_command "rhc alias add ${scalable_jbossews20_app} -l ${rhlogin} -p ${password} bar1.${domain}.com" &&
+    run_command "rhc alias update-cert ${scalable_jbossews20_app} -l ${rhlogin} -p ${password} --certificate data/ssl_cert/server1.crt --private-key data/ssl_cert/server1.key" || failed_app="${failed_app}${scalable_jbossews20_app} "
 fi
 
 
