@@ -523,9 +523,9 @@ function scalable_jbossews20_app_check() {
     run_command "curl -vvv https://${6}/ --cacert data/ssl_cert/server1.crt | grep 'title' | grep '${5}'" || return 1
     # Test alias custom ssl cert delete
     if [ X"${5}" == X"2" ]; then
-        run_command "rhc alias delete-cert ${1} ${6} -l ${rhlogin} -p ${password}" &&
+        run_command "rhc alias delete-cert ${1} ${6} -l ${rhlogin} -p ${password} --confirm" &&
         run_command "curl -vvv http://${6}/ | grep 'title' | grep '${5}'" &&
-        run_command "curl -vvv https://${6}/ --cacert data/ssl_cert/server1.crt | grep 'certificate issuer has been marked as not trusted by the user'" || return 1
+        run_command "curl -vvv https://${6}/ --cacert data/ssl_cert/server1.crt 2>&1 | grep 'certificate issuer has been marked as not trusted by the user'" || return 1
     fi
 }
 
