@@ -555,6 +555,7 @@ function scalable_jbosseap6_app_check() {
     run_command "curl '${app_url}test.jsp?action=show' | grep 'speaker${5}'" || return 1
     # Test restart
     control_app ${1} ${2} ${3} "restart" &&
+    run_command "sleep 30" &&
     run_command "curl '${app_url}test.jsp?action=show' | grep 'speaker${5}'" || return 1
     # Test threaddump
     output=$(dump_app ${1} ${2} ${3}) &&
@@ -565,7 +566,7 @@ function scalable_jbosseap6_app_check() {
     if [ X"$7" == X"scale-up" ]; then
         new_count=2 &&
         run_command "rhc cartridge scale -c jbosseap-6 --min ${new_count} -a ${1} -l ${2} -p ${3}" &&
-        grep_string_from_web_gears ${1} ${2} ${3} "jbosseap-6" ${new_count} "${5}" 'Y' '' || return 1
+        grep_string_from_web_gears ${1} ${2} ${3} "jbosseap-6" ${new_count} "${5}" 'Y' '' &&
         grep_string_from_web_gears ${1} ${2} ${3} "jbosseap-6" ${new_count} "speaker${5}" '' 'test.jsp?action=show' || return 1
     fi
 }
