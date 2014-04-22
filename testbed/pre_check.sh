@@ -35,6 +35,7 @@ warnning_msg=""
 
 echo -e "Please input your choice\n 0: all data \n Specified app: ${app_list// /|}"
 read choice
+choice=${choice//|/ }
 
 echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "php53_app"; then

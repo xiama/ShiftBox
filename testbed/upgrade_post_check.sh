@@ -35,6 +35,7 @@ warnning=""
 
 echo -e "Please input your choice\n 0: all data \n Specified app: ${app_list// /|}"
 read choice
+choice=${choice//|/ }
 
 echo -e "Do you want to delete and re-add jenkins-client for existing apps? [Y|N]"
 read re_add_jenkins_clent
