@@ -27,6 +27,7 @@ fi
 touch ${log_file}
 
 print_warnning "Pls firstly run oo-diagnostics on both broker and nodes to make sure your env pass sanity test !!!"
+print_warnning "Pls make sure your current login have permission to write /etc/hosts or could run sudo without password !!!"
 
 #set -x
 failed_app=""

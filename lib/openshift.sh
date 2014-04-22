@@ -8,10 +8,10 @@ function write_etc_hosts() {
     app_ip=$(nslookup ${app_hostname} | grep 'Address' | tail -n 1 | awk '{print $2}')
     reg_exp="^[^#].*${alias_str}"
     if grep -q "${reg_exp}" /etc/hosts; then
-        run_command "sed -i '/${reg_exp}/s/.*/${app_ip}   ${alias_str}/g' /etc/hosts"
+        run_command "sudo sed -i '/${reg_exp}/s/.*/${app_ip}   ${alias_str}/g' /etc/hosts"
         ret=$?
     else
-        run_command "echo '${app_ip}   ${alias_str}' >>/etc/hosts"
+        run_command "sudo sh -c \"echo '${app_ip}   ${alias_str}' >>/etc/hosts\""
         ret=$?
     fi
     return $ret

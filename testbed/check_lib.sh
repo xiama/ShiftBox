@@ -48,7 +48,7 @@ function perl510_app_check() {
     if [ X"${6}" == X"modify" ]; then
         run_command "test 1 -eq $(rhc app show -a ${1} -l ${2} -p ${3} --state | grep 'idle' | wc -l)" &&
         write_etc_hosts ${app_hostname} ${7} &&
-        run_command "curl -vvv https://${7}/test.pl?action=show --cacert data/ssl_cert/server.crt | grep 'speaker${4}'" &&
+        run_command "curl -f -vvv https://${7}/test.pl?action=show --cacert data/ssl_cert/server.crt" &&
         run_command "sleep 30" &&
         run_command "test 1 -eq $(rhc app show -a ${1} -l ${2} -p ${3} --state | grep 'started' | wc -l)" &&
         run_command "curl -vvv https://${7}/test.pl?action=show --cacert data/ssl_cert/server.crt | grep 'speaker${4}'" || return 1

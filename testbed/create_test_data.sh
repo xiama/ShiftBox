@@ -43,9 +43,8 @@ echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "php53_app"; then
     create_app ${php53_app} "php" ${rhlogin} ${password} &&
     add_cart ${php53_app} "cron" "${rhlogin}" "${password}" &&
-    add_cart ${php53_app} "mysql-5.1" "${rhlogin}" "${password}" &&
-    run_command "cd ${php53_app} && echo 'date >> \${OPENSHIFT_REPO_DIR}php/date.txt' >.openshift/cron/minutely/date.sh && chmod +x .openshift/cron/minutely/date.sh && git add . && git commit -a -mx && git push && cd -" 
-    run_command "cd ${php53_app} && git remote add upstream -m master git://github.com/openshift/drupal-quickstart.git && git pull -s recursive -X theirs upstream master && git push && cd -" || failed_app="${failed_app}${php53_app} "
+    add_cart ${php53_app} "postgresql-8.4" "${rhlogin}" "${password}" &&
+    run_command "cd ${php53_app} && echo 'date >> \${OPENSHIFT_REPO_DIR}php/date.txt' >.openshift/cron/minutely/date.sh && chmod +x .openshift/cron/minutely/date.sh && git add . && git commit -a -mx && git push && cd -" || failed_app="${failed_app}${php53_app} "
 fi
 
 
@@ -182,7 +181,7 @@ echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_ruby18_app"; then
     create_app ${scalable_ruby18_app} "ruby-1.8" ${rhlogin} ${password} '--scaling' &&
     add_cart ${scalable_ruby18_app} "mysql-5.1" "${rhlogin}" "${password}" &&
-    run_command "cp -r data/{config.ru,Gemfile} ${scalable_ruby18_app}/ && cd ${scalable_ruby18_app} && bundle install && sed -i -e 's/#dbname/${scalable_ruby18_app}/g' config.ru -e 's/#user/${db_user}/g' config.ru -e 's/#passwd/${db_passwd}/g' config.ru && git add . && git commit -amt && git push && cd -" || failed_app="${failed_app}${scalable_ruby18_app}"
+    run_command "cp -r data/{config.ru,Gemfile} ${scalable_ruby18_app}/ && cd ${scalable_ruby18_app} && bundle install && sed -i -e 's/#dbname/${scalable_ruby18_app}/g' config.ru -e 's/#user/${db_user}/g' config.ru -e 's/#passwd/${db_passwd}/g' config.ru && git add . && git commit -amt && git push && cd -" || failed_app="${failed_app}${scalable_ruby18_app} "
 fi
 
 
