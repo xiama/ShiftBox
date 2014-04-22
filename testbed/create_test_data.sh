@@ -238,8 +238,7 @@ fi
 echo '***********************************************' | tee -a ${log_file}
 
 
-echo "Failed app list:"
-print_red_txt "${failed_app}"
+print_red_txt "Failed app list: ${failed_app}"
 
 # Save user info into file
 #echo "Saving user info for ${domain}"

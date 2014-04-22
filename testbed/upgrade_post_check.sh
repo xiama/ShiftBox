@@ -211,8 +211,7 @@ warnning_msg="${warnning_msg}\nWeb Console: Pls remember to log into web console
 warnning_msg="${warnning_msg}\nAuth Tokens: Pls remember to check previous auth tokens is working well, and use 'rm -rf ~/.openshift/token*; rhc setup' to create a new one, make sure rhc command does NOT requrired password !!!"
 print_warnning "${warnning_msg}"
 
-echo "Failed app list:"
-print_red_txt "${failed_app}"
+print_red_txt "Failed app list: ${failed_app}"
 
 # Save user info into file
 #echo "Saving user info for ${domain}"
