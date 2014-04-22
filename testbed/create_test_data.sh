@@ -178,7 +178,7 @@ echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_ruby18_app"; then
     create_app ${scalable_ruby18_app} "ruby-1.8" ${rhlogin} ${password} '--scaling' &&
     add_cart ${scalable_ruby18_app} "mysql-5.1" "${rhlogin}" "${password}" &&
-    run_command "cp -r data/{config.ru,Gemfile} ${scalable_ruby18_app}/ && cd ${scalable_ruby18_app} && bundle install && sed -i -e 's/#dbname/${scalable_ruby18_app}/g' config.ru -e 's/#user/${db_user}/g' config.ru -e 's/#passwd/${db_passwd}/g' config.ru && git add . && git commit -amt && git push && cd -" || failed_app="${failed_app}${scalable_ruby18_app}"
+    run_command "cp -r data/{config.ru,Gemfile} ${scalable_ruby18_app}/ && cd ${scalable_ruby18_app} && bundle install && sed -i -e 's/#dbname/${scalable_ruby18_app}/g' config.ru -e 's/#user/${db_user}/g' config.ru -e 's/#passwd/${db_passwd}/g' config.ru && git add . && git commit -amt && git push && cd -" || failed_app="${failed_app}${scalable_ruby18_app} "
 fi
 
 
