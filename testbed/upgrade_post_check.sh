@@ -68,7 +68,7 @@ fi
 
 echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "perl510_app"; then 
-    perl510_app_check ${perl510_app} ${rhlogin} ${password} "1" "2" "modify" || failed_app="${failed_app}${perl510_app} "
+    perl510_app_check ${perl510_app} ${rhlogin} ${password} "1" "2" "modify" "bar.jialiu.com" || failed_app="${failed_app}${perl510_app} "
 fi
 
 
@@ -86,7 +86,7 @@ fi
 
 echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "ruby18_app"; then 
-    ruby18_app_check ${ruby18_app} ${rhlogin} ${password} "bar.${domain}.com" && 
+    ruby18_app_check ${ruby18_app} ${rhlogin} ${password} && 
     warnning_msg="${warnning_msg}\n${ruby18_app}: Remember to ssh into app to check mysql connection!!!" || failed_app="${failed_app}${ruby18_app} "
 fi
 
@@ -184,7 +184,7 @@ fi
 
 echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbossews20_app"; then
-    scalable_jbossews20_app_check ${scalable_jbossews20_app} ${rhlogin} ${password} "1" "2" "bar1.${domain}.com" &&
+    scalable_jbossews20_app_check ${scalable_jbossews20_app} ${rhlogin} ${password} "1" "2" "bar1.jialiu.com" &&
     warnning_msg="${warnning_msg}\n${scalable_jbossews20_app}: Take note of the count of lines including 'PSPermGen' to compare with next check!!!" || failed_app="${failed_app}${scalable_jbossews20_app} "
 fi
 

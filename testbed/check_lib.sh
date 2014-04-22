@@ -39,16 +39,19 @@ function perl510_app_check() {
     # $4: test string before change
     # $5: test string after change
     # $6: action
+    # $7: alias
 
-    local app_url=""
-    app_url=$(get_app_url ${1} ${2} ${3}) || return 1
+    local app_url="" app_hostname=""
+    app_url=$(get_app_url ${1} ${2} ${3}) &&
+    app_hostname=$(echo ${app_url} | awk -F"/" '{print $3}') || return 1
     # Test idle status and existing data
     if [ X"${6}" == X"modify" ]; then
         run_command "test 1 -eq $(rhc app show -a ${1} -l ${2} -p ${3} --state | grep 'idle' | wc -l)" &&
-        run_command "curl -f '${app_url}'" &&
+        write_etc_hosts ${app_hostname} ${7} &&
+        run_command "curl -vvv https://${7}/test.pl?action=show --cacert data/ssl_cert/server.crt | grep 'speaker${4}'" &&
         run_command "sleep 30" &&
         run_command "test 1 -eq $(rhc app show -a ${1} -l ${2} -p ${3} --state | grep 'started' | wc -l)" &&
-        run_command "curl '${app_url}test.pl?action=show' | grep 'speaker${4}'" || return 1
+        run_command "curl -vvv https://${7}/test.pl?action=show --cacert data/ssl_cert/server.crt | grep 'speaker${4}'" || return 1
     fi
     # Test git push
     run_command "cd ${1} && sed -i '/title/s/${4}/${5}/g' perl/index.pl && git commit -a -m'modify title' && git push && cd -" || return 1
@@ -57,6 +60,10 @@ function perl510_app_check() {
     # Test new data
     run_command "curl ${app_url} | grep 'title' | grep '${5}'" &&
     run_command "curl ${app_url}test.pl?action=show | grep 'speaker${5}'" || return 1
+    # Test alias
+    write_etc_hosts ${app_hostname} ${7} &&
+    run_command "curl -vvv http://${7}/test.pl?action=show | grep 'speaker${5}'" &&
+    run_command "curl -vvv https://${7}/test.pl?action=show --cacert data/ssl_cert/server.crt | grep 'speaker${5}'" || return 1
 }
 
 function python26_app_check() {
@@ -85,16 +92,11 @@ function ruby18_app_check() {
     # $1: app_name
     # $2: rhlogin
     # $3: password
-    # $4: alias string
 
     local app_url=""
     app_url=$(get_app_url ${1} ${2} ${3}) || return 1
     # Test quick-start app
     run_command "curl ${app_url} | grep -i 'redmine'" || return 1
-    # Test alias
-    write_etc_hosts ${app_url} ${4} &&
-    run_command "curl -vvv http://${4}/ | grep -i 'redmine'" &&
-    run_command "curl -vvv https://${4}/ --cacert data/ssl_cert/server.crt | grep -i 'redmine'" || return 1
 }
 
 function ruby19_app_check() {
@@ -499,8 +501,9 @@ function scalable_jbossews20_app_check() {
     # $5: test string after change
     # $6: alias string
 
-    local app_url="" ssh_url="" output="" target_file=""
+    local app_url="" ssh_url="" output="" target_file="" app_hostname=""
     app_url=$(get_app_url ${1} ${2} ${3}) &&
+    app_hostname=$(echo ${app_url} | awk -F"/" '{print $3}') &&
     ssh_url=$(get_app_ssh_url ${1} ${2} ${3}) || return 1
     # Test existing data
     run_command "curl ${app_url} | grep 'title' | grep '${4}'" || return 1
@@ -514,11 +517,16 @@ function scalable_jbossews20_app_check() {
     target_file=$(echo ${output} | awk -F'-f' '{print $2}' | awk '{print $1}' | tr -d [:blank:]) &&
     run_command "ssh ${ssh_url} 'cat ${target_file} | grep PSPermGen'" &&
     run_command "curl ${app_url} | grep 'title' | grep '${5}'" || return 1
-    # Test alise
     # Test alias
-    write_etc_hosts ${app_url} ${6} &&
+    write_etc_hosts ${app_hostname} ${6} &&
     run_command "curl -vvv http://${6}/ | grep 'title' | grep '${5}'" &&
     run_command "curl -vvv https://${6}/ --cacert data/ssl_cert/server1.crt | grep 'title' | grep '${5}'" || return 1
+    # Test alias custom ssl cert delete
+    if [ X"${5}" == X"2" ]; then
+        run_command "rhc alias delete-cert ${1} ${6} -l ${rhlogin} -p ${password}" &&
+        run_command "curl -vvv http://${6}/ | grep 'title' | grep '${5}'" &&
+        run_command "curl -vvv https://${6}/ --cacert data/ssl_cert/server1.crt | grep 'certificate issuer has been marked as not trusted by the user'" || return 1
+    fi
 }
 
 function scalable_jbosseap6_app_check() {

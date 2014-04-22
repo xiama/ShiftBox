@@ -28,6 +28,8 @@ touch ${log_file}
 #set -x
 failed_app=""
 
+
+echo "Before running this script, make sure allow user to create custom SSL - oo-admin-ctl-user -l <login> --allowprivatesslcertificates true !!!"
 echo -e "Please input your choice\n 0: all data \n Specified app: ${app_list// /|}"
 read choice
 choice=${choice//|/ }
@@ -41,8 +43,9 @@ echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "php53_app"; then
     create_app ${php53_app} "php" ${rhlogin} ${password} &&
     add_cart ${php53_app} "cron" "${rhlogin}" "${password}" &&
-    add_cart ${php53_app} "postgresql-8.4" "${rhlogin}" "${password}" &&
-    run_command "cd ${php53_app} && echo 'date >> \${OPENSHIFT_REPO_DIR}php/date.txt' >.openshift/cron/minutely/date.sh && chmod +x .openshift/cron/minutely/date.sh && git add . && git commit -a -mx && git push && cd -" || failed_app="${failed_app}${php53_app} "
+    add_cart ${php53_app} "mysql-5.1" "${rhlogin}" "${password}" &&
+    run_command "cd ${php53_app} && echo 'date >> \${OPENSHIFT_REPO_DIR}php/date.txt' >.openshift/cron/minutely/date.sh && chmod +x .openshift/cron/minutely/date.sh && git add . && git commit -a -mx && git push && cd -" 
+    run_command "cd ${php53_app} && git remote add upstream -m master git://github.com/openshift/drupal-quickstart.git && git pull -s recursive -X theirs upstream master && git push && cd -" || failed_app="${failed_app}${php53_app} "
 fi
 
 
@@ -50,6 +53,8 @@ echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "perl510_app"; then 
     create_app ${perl510_app} "perl-5.10" ${rhlogin} ${password} &&
     add_cart ${perl510_app} "mysql-5.1" "${rhlogin}" "${password}" &&
+    run_command "rhc alias add ${perl510_app} -l ${rhlogin} -p ${password} bar.jialiu.com" &&
+    run_command "rhc alias update-cert ${perl510_app} bar.jialiu.com -l ${rhlogin} -p ${password} --certificate data/ssl_cert/server.crt --private-key data/ssl_cert/server.key" &&
     run_command "cp -rf data/test.pl ${perl510_app}/perl/ && cd ${perl510_app} && git add . && git commit -a -mx && git push && cd -"  || failed_app="${failed_app}${perl510_app} "
 fi
 
@@ -71,8 +76,6 @@ echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "ruby18_app"; then 
     create_app ${ruby18_app} "ruby-1.8" ${rhlogin} ${password} &&
     add_cart ${ruby18_app} "mysql-5.1" "${rhlogin}" "${password}" &&
-    run_command "rhc alias add ${ruby18_app} -l ${rhlogin} -p ${password} bar.${domain}.com" &&
-    run_command "rhc alias update-cert ${ruby18_app} -l ${rhlogin} -p ${password} --certificate data/ssl_cert/server.crt --private-key data/ssl_cert/server.key" &&
     run_command "cd ${ruby18_app} && rm -rf * && git remote add upstream -m master git://github.com/openshift/openshift-redmine-quickstart.git && git pull -s recursive -X theirs upstream master && git push && cd -" || failed_app="${failed_app}${ruby18_app} "
 fi
 
@@ -211,8 +214,8 @@ fi
 echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbossews20_app"; then
     create_app ${scalable_jbossews20_app} "jbossews-2.0" ${rhlogin} ${password} '--scaling' &&
-    run_command "rhc alias add ${scalable_jbossews20_app} -l ${rhlogin} -p ${password} bar1.${domain}.com" &&
-    run_command "rhc alias update-cert ${scalable_jbossews20_app} -l ${rhlogin} -p ${password} --certificate data/ssl_cert/server1.crt --private-key data/ssl_cert/server1.key" || failed_app="${failed_app}${scalable_jbossews20_app} "
+    run_command "rhc alias add ${scalable_jbossews20_app} -l ${rhlogin} -p ${password} bar1.jialiu.com" &&
+    run_command "rhc alias update-cert ${scalable_jbossews20_app} bar1.jialiu.com -l ${rhlogin} -p ${password} --certificate data/ssl_cert/server1.crt --private-key data/ssl_cert/server1.key" || failed_app="${failed_app}${scalable_jbossews20_app} "
 fi
 
 

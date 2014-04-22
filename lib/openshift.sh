@@ -6,8 +6,15 @@ function write_etc_hosts() {
     local alias_str="$2"
     local app_ip 
     app_ip=$(nslookup ${app_hostname} | grep 'Address' | tail -n 1 | awk '{print $2}')
-    run_command "sed -i '/^[^#].*${alias_str}/s/.*/${app_ip}   ${alias_str}/g' /etc/hosts"
-    return $?
+    reg_exp="^[^#].*${alias_str}"
+    if grep -q "${reg_exp}" /etc/hosts; then
+        run_command "sed -i '/${reg_exp}/s/.*/${app_ip}   ${alias_str}/g' /etc/hosts"
+        ret=$?
+    else
+        run_command "echo '${app_ip}   ${alias_str}' >>/etc/hosts"
+        ret=$?
+    fi
+    return $ret
 }
 
 function create_app() {
