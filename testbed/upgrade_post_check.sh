@@ -207,6 +207,9 @@ if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbosseap6_app1";
 fi
 
 echo '***********************************************' | tee -a ${log_file}
+    BZ1090095_check ${rhlogin} || failed_app="${failed_app} BZ1090095 "
+
+echo '***********************************************' | tee -a ${log_file}
 
 warnning_msg="${warnning_msg}\nWeb Console: Pls remember to log into web console to make sure it woking well !!!"
 warnning_msg="${warnning_msg}\nAuth Tokens: Pls remember to check previous auth tokens is working well, and use 'rm -rf ~/.openshift/token*; rhc setup' to create a new one, make sure rhc command does NOT requrired password !!!"

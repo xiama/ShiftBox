@@ -151,7 +151,6 @@ if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_nodejs010_app"; 
     warnning_msg="${warnning_msg}\n${scalable_nodejs010_app}: Pls check app's haproxy-status page to make sure all web gears are listed there!!!" || failed_app="${failed_app}${scalable_nodejs010_app} "
 fi
 
-
 echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbossews10_app"; then
     scalable_jbossews10_app_check ${scalable_jbossews10_app} ${rhlogin} ${password} "Welcome to OpenShift" "1" &&
@@ -181,6 +180,10 @@ if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_jbosseap6_app1";
 fi
 
 echo '***********************************************' | tee -a ${log_file}
+BZ1090095_check ${rhlogin} || failed_app="${failed_app} BZ1090095 "
+
+echo '***********************************************' | tee -a ${log_file}
+
 
 warnning_msg="${warnning_msg}\nWeb Console: Pls remember to log into web console to make sure it woking well !!!"
 warnning_msg="${warnning_msg}\nAuth Tokens: Pls remember to create auth tokens using 'rm -rf ~/.openshift/token*; rhc setup' to make sure rhc command does NOT requrired password !!!"

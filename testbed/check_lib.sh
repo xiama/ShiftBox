@@ -521,6 +521,9 @@ function scalable_jbossews20_app_check() {
     write_etc_hosts ${app_hostname} ${6} &&
     run_command "curl -vvv http://${6}/ | grep 'title' | grep '${5}'" &&
     run_command "curl -vvv https://${6}/ --cacert data/ssl_cert/server1.crt | grep 'title' | grep '${5}'" || return 1
+    # Test BZ#1069682
+    run_command "curl -k -vvv https://${app_hostname}/ 2>&1 | grep 'RC4'" ||
+    run_command "curl -vvv https://${6}/ --cacert data/ssl_cert/server1.crt 2>&1 | grep 'RC4'" && return 1
     # Test alias custom ssl cert delete
     if [ X"${5}" == X"2" ]; then
         run_command "rhc alias delete-cert ${1} ${6} -l ${rhlogin} -p ${password} --confirm" &&
@@ -660,4 +663,11 @@ function create_new_app_check() {
     run_command "rhc snapshot-restore -a ${1} -f ${1}.tar.gz -l ${2} -p ${3}" || return 1
     run_command "sleep 30" &&
     grep_string_from_web_gears ${1} ${2} ${3} "jbosseap-6" ${4} "speaker1" '' 'test.jsp?action=show' || return 1
+}
+
+function BZ1090095_check() {
+    # $1: rhlogin
+
+    run_command "curl -f -k https://$(get_libra_server)/broker/rest/applications -H 'X-Remote-User: ${1}' -H 'User-Agent: openshift' 2>&1 | grep '401'" &&
+    run_command "curl -f -k https://$(get_libra_server)/broker/rest/applications -H 'X-Remote-User: ${1}' -H 'Authorization: Bearer' 2>&1 | grep '401'" || return 1
 }
