@@ -33,7 +33,7 @@ print_warnning "Pls make sure your current login have permission to write /etc/h
 failed_app=""
 warnning=""
 
-echo -e "Please input your choice\n 0: all data \n Specified app: ${app_list// /|}"
+echo -e "Please input your choice\n 0: all data \n Specified app: new_app|${app_list// /|}"
 read choice
 choice=${choice//|/ }
 
