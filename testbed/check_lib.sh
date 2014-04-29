@@ -114,6 +114,7 @@ function ruby19_app_check() {
     # Test git push
     run_command "cd ${1} && sed -i '/title/s/${4}/${5}/g' config.ru && git commit -a -m'modify title' && git push && cd -" || return 1
     # Test new data
+    run_command "sleep 60"    # vhost frontend plugin need more time after git push
     run_command "curl ${app_url} | grep 'title' | grep '${5}'" || return 1
     # Test threaddump
     output=$(dump_app ${1} ${2} ${3}) &&
