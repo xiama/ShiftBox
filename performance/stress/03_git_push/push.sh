@@ -4,12 +4,18 @@ read j
 [ -d ./git_test ] || mkdir ./git_test
 [ -d ./app_repo ] || mkdir ./app_repo
 
-#make change for the python apps
+#make change for the python-2.6 apps
 cd ./app_repo
 for i in `seq 1 $j`
 do
-  rhc git-clone app$i -l user$i -predhat
-  cd app$i && sed -i 's/OpenShift/basketball/g' wsgi/application && git add . && git commit -a -m'modify' &&cd -
+  spawn rhc git-clone app$i -l user$i -predhat
+  expect {
+        "Are you sure you want to continue connecting (yes/no)?*"   {send "yes\r";exp_continue}
+  }
+EOF
+
+ # rhc git-clone app$i -l user$i -predhat
+  cd app$i && sed -i 's/OpenShift/basketball/g' wsgi.py && git add . && git commit -a -m 'Update page' &&cd -
 done
 
 cd ..
@@ -41,7 +47,7 @@ done
 cd ./app_repo
 for i in `seq 1 $j`
 do
-  cd app$i && sed -i 's/basketball/OpenShift/g' wsgi/application && git add . && git commit -a -m'modify' &&git push &&cd -
+  cd app$i && sed -i 's/basketball/OpenShift/g' wsgi.py && git add . && git commit -a -m 'recover the change' &&git push &&cd -
 done
 
 cd ..

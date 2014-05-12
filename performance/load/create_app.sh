@@ -1,9 +1,12 @@
 #!/bin/bash
 
+#This script should be excuted on broker, or need to modify the 
+#excute method for broker command.
+
 #Modify the ip address/passwd firstly before testing
-brokerIp=10.66.79.85
-nodeIp=10.66.78.152
-brokerPassword="redhat"
+#brokerIp=
+nodeIp=
+#brokerPassword="redhat"
 nodePassword="redhat"
 
 [ -f ~/.ssh/id_rsa ] || ssh-keygen -f ~/.ssh/id_rsa -t rsa -N ''
@@ -32,10 +35,7 @@ nodeAverageMemory=$((${nodeTotalFreeMemory}/8))
 haveError()
 {
 
-	echo "An error is encountered,will stop the  program."
-	# send notify email
-	exit 0
-
+	echo "An error is encountered,will stop the program."
 }
 
 
