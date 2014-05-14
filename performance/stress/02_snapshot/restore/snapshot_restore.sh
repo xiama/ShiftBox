@@ -5,6 +5,7 @@ read j
 [ -d ./restore_test ] || mkdir ./restore_test
 [ -d ./app_repo ] || mkdir ./app_repo
 
+cloud_domain=`hostname | sed 's/broker\.//g'`
 #make change for the python apps
 cd ./app_repo
 rm -rf app*
@@ -16,7 +17,7 @@ do
         "Are you sure you want to continue connecting*"      {send "yes\r";exp_continue}
   }
 EOF
-  cd app$i && sed -i 's/OpenShift/basketball/g' wsgi/application && git add . && git commit -a -m'modify' && git push &&cd -
+  cd app$i && sed -i 's/OpenShift/basketball/g' wsgi.py && git add . && git commit -a -m'modify' && git push &&cd -
 done
 
 cd ..
@@ -32,11 +33,11 @@ sleep 60
 #verify the apps were restored
 for i in `seq 1 $j`
 do
-  aa=$(curl app$i-name$i.stress.com|grep OpenShift)
+  aa=$(curl app$i-name$i.$cloud_domain|grep OpenShift)
   if [ -z $aa ];then
     echo "!!!!!!!!!!!!!!!!!!!!1app$i failed"
   else
-    echo "app$i succeed"
+    echo "app$i succeed^^ ^^ ^^ ^^ ^^"
   fi
 done
 

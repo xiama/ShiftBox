@@ -29,12 +29,13 @@ sleep 300
 
 #make result dir
 [ -d ./result ] || mkdir ./result
+rm -rf result/*
 
 #domain show concurrently
 for j in 1 10 20 30 40 50 60 70 80 90 100
 do
   echo "**********Get domain info for $j user***********************"
-  for i in `seq 1 $j`; do (time -p rhc domain show -l user$i -predhat) 2>>domaintest/domain_show$j  & done
+  for i in `seq 1 $j`; do (time -p rhc domain show -l user$i -predhat) 2>>result/domain_show$j  & done
   sleep 60
 done
 
@@ -43,7 +44,7 @@ echo "Now generating the avgs..."
 for f in 1 10 20 30 40 50 60 70 80 90 100
 do
   echo "$f user: " >> test_results
-  cat domaintest/domain_show$f | grep real | awk '{sum+=$2}END{print sum/NR}'  >> test_results
+  cat result/domain_show$f | grep real | awk '{sum+=$2}END{print sum/NR}'  >> test_results
   echo "" >> test_results
   sleep 1
 done
