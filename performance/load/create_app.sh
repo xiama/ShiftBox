@@ -13,11 +13,14 @@ nodePassword="redhat"
 rsakey="~/.ssh/id_rsa.pub"
 
 [ -f /usr/bin/expect ] || yum install expect -y
+
+expect -f - <<EOF
 spawn ssh-copy-id  root@${nodeIp} -i ${rsakey}
 expect {
 	"*password"    {send "${nodePassword}\r";exp_continue}
 }
 EOF
+
 
 name="new"
 [ -d ./result ] || mkdir ./result

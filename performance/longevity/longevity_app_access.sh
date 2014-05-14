@@ -7,7 +7,7 @@ curl_conf_file=$pwd/app_access.conf
 local_ip=`ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
 
 . function.sh
-app_types="jbosseap-6 php-5.3 diy-0.1 python-2.6 ruby-1.9 ruby-1.8 perl-5.10 jbossews-1.0 jbossews-2.0 python-2.7 nodejs-0.10"
+app_types="jbosseap-6 php-5.3 php-5.4 diy-0.1 python-2.6 ruby-1.9 ruby-1.8 perl-5.10 jbossews-1.0 jbossews-2.0 python-2.7 nodejs-0.10"
 
 
 
