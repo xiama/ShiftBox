@@ -189,6 +189,7 @@ echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_ruby19_app"; then
     create_app ${scalable_ruby19_app} "ruby-1.9" ${rhlogin} ${password} '--scaling' &&
     add_cart ${scalable_ruby19_app} "mysql-5.1" "${rhlogin}" "${password}" &&
+    add_cart ${scalable_ruby19_app} "postgresql-9.2" "${rhlogin}" "${password}" &&
     run_command "cd ${scalable_ruby19_app} && git remote add upstream -m master git://github.com/openshift/rails-example.git && git pull -s recursive -X theirs upstream master && git push && cd -" || failed_app="${failed_app}${scalable_ruby19_app} "
 fi
 

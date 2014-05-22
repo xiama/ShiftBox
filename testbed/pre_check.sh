@@ -141,7 +141,8 @@ fi
 
 echo '***********************************************' | tee -a ${log_file}
 if [ X"$choice" == X"0" ] || include_item "${choice}" "scalable_ruby19_app"; then
-    scalable_ruby19_app_check ${scalable_ruby19_app} ${rhlogin} ${password} || failed_app="${failed_app}${scalable_ruby19_app} "
+    scalable_ruby19_app_check ${scalable_ruby19_app} ${rhlogin} ${password} &&
+    warnning_msg="${warnning_msg}\n${scalable_ruby19_app}: Remember to ssh into app to check postgresql-9.2 connection!!!" || failed_app="${failed_app}${scalable_ruby19_app} "
 fi
 
 
